@@ -1,26 +1,20 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './App.css'
+import { PdfViewer } from './pdf'
+import { MyDocument } from './pdf/render'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <canvas style={{
+        // boxShadow: '2px 4px 18px 1px #3b3b3b29',
+        position: 'absolute',
+        bottom: '100%',
+        right: '100%',
+      }} id="canvas"></canvas>
+      <PdfViewer fileUrl='./document.pdf' />
+      {/* <MyDocument /> */}
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

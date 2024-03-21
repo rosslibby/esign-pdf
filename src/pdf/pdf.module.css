@@ -1,0 +1,19 @@
+.container {
+  position: relative;
+}
+
+.pdf {
+  box-shadow: 2px 4px 18px 1px #3b3b3b29;
+}
+
+.pdfNoSelect {
+  pointer-events: none;
+  user-select: none;
+}
+
+.zone {
+  background-color: #30ffe98a;
+  border: 1px solid #45e1ff;
+  position: absolute;
+  z-index: 2;
+}
