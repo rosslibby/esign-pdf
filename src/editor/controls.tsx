@@ -4,6 +4,7 @@ import { zoneCtx } from '../zone'
 import styles from './editor.module.css'
 import { Zone } from '../zone/types'
 import { LeftArrow, RightArrow, ZoneIcon } from './icons'
+import Menu from '../zone/menu'
 
 export default function Controls() {
   const { bounds, menu, placing, zone: selectedZone, _: {
@@ -18,11 +19,15 @@ export default function Controls() {
     (prevState: boolean) => !prevState,
   )
 
-  const handleZoneClick = (id: string) => {
-    setZone(zones.find((zone: Zone) => zone.id === id))
+  const handleZoneClick = (selectedZone: Zone) => {
+    setZone(selectedZone)
     setZones((zones: Zone[]) => zones.map(
-      (zone: Zone) => ({ ...zone, active: zone.id === id })
+      (zone: Zone) => ({ ...zone, active: zone.id === selectedZone.id })
     ))
+
+    if (page !== selectedZone.pageNumber) {
+      setPage(selectedZone.pageNumber)
+    }
   }
 
   const previousPage = () =>
@@ -64,10 +69,15 @@ export default function Controls() {
               <li
                 key={zone.id}
                 className={`${styles.listItem} ${selectedZone?.id === zone.id && styles.selected}`}
-                onClick={() => handleZoneClick(zone.id)}
+                onClick={() => handleZoneClick(zone)}
               >
                 <ZoneIcon />
-                <span>{zone.type}</span>
+                <div className={styles.expanded}>
+                  <span>{zone.type}</span>
+                  {selectedZone?.id === zone.id && (
+                    <Menu {...zone} />
+                  )}
+                </div>
               </li>
             ))}
           </ul>

@@ -20,6 +20,7 @@ export const PdfViewer = ({ fileUrl }: {
   fileUrl: string
 }) => {
   const { finalize } = useClientDocument()
+  const { _: { setZone } } = useContext(zoneCtx)
   const {
     bounds,
     page,
@@ -102,10 +103,25 @@ export const PdfViewer = ({ fileUrl }: {
       const final = document
         .querySelector(`[data-index="${zones.length - 1}"]`) as HTMLElement
       if (final) {
+        const zonePayload = {
+          offsetX: final.offsetLeft,
+          offsetY: final.offsetTop,
+          active: true,
+        }
+
         setZones((prevState: Zone[]) => prevState.map(
-          (zone: Zone, i: number) => i === zones.length - 1
-            ? ({ ...zone, offsetX: final.offsetLeft, offsetY: final.offsetTop })
-            : zone
+          (zone: Zone, i: number) => {
+            if (i === zones.length - 1) {
+              setZone({ ...zone, ...zonePayload })
+
+              return ({
+                ...zone,
+                ...zonePayload,
+              })
+            } else {
+              return ({ ...zone, active: false })
+            }
+          }
         ))
       }
     }
