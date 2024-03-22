@@ -1,6 +1,9 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useContext, useState } from 'react'
 import { ZONE_TYPE, Zone } from './types'
 import styles from './zone.module.css'
+import { zoneCtx } from '.'
+import { documentCtx } from '../document'
+import { Trash } from '../editor/icons'
 
 const zoneTypes = [
   ZONE_TYPE.signature,
@@ -11,29 +14,74 @@ const zoneTypes = [
   ZONE_TYPE.variable,
 ]
 
-export default function Menu({ id, type, label }: Zone) {
-  const [zoneType, setZoneType] = useState<ZONE_TYPE>(type)
-  const [zoneLabel, setZoneLabel] = useState<string>(label)
+export default function Menu({ id, variableKey, type, label }: Zone) {
+  const { _: { setZone } } = useContext(zoneCtx)
+  const { _: { setZones } } = useContext(documentCtx)
 
+  const deleteZone = () => {
+    setZone(undefined)
+    setZones((zones: Zone[]) => zones.filter((zone: Zone) => zone.id !== id))
+  }
   const changeType = (e: ChangeEvent<HTMLSelectElement>) => {
-    setZoneType((prevState: ZONE_TYPE) => e.target.value as ZONE_TYPE)
+    setZone((prevState: Zone) => ({
+      ...prevState,
+      type: e.target.value as ZONE_TYPE,
+    }))
+    setZones((prevState: Zone[]) => prevState.map(
+      (zone: Zone) => zone.id === id
+        ? ({ ...zone, type: e.target.value as ZONE_TYPE })
+        : zone,
+    ))
   }
   const changeLabel = (e: ChangeEvent<HTMLInputElement>) => {
-    setZoneLabel(e.target.value)
+    setZone((prevState: Zone) => ({ ...prevState, label: e.target.value }))
+    setZones((prevState: Zone[]) => prevState.map(
+      (zone: Zone) => zone.id === id
+        ? ({ ...zone, label: e.target.value })
+        : zone,
+    ))
+  }
+  const changeVariableKey = (e: ChangeEvent<HTMLInputElement>) => {
+    setZone((prevState: Zone) => ({
+      ...prevState,
+      variableKey: e.target.value,
+    }))
+    setZones((prevState: Zone[]) => prevState.map(
+      (zone: Zone) => zone.id === id
+        ? ({ ...zone, variableKey: e.target.value })
+        : zone,
+    ))
   }
 
   return (
     <div className={styles.menu}>
-      <select onChange={changeType}>
+      <select onChange={changeType} className={styles.field}>
         {zoneTypes.map((type) => (
           <option key={`select-type-${type}`} value={type}>
             {type}
           </option>
         ))}
       </select>
-      <input type="text" value={label} onChange={changeLabel} />
-      <button>Save zone</button>
-      <button>Cancel (remove zone)</button>
+      {type === ZONE_TYPE.variable && (
+        <input
+          className={styles.field}
+          placeholder="Query param (e.g. 'name')"
+          type="text"
+          value={variableKey}
+          onChange={changeVariableKey}
+        />
+      )}
+      <input
+        className={styles.field}
+        placeholder="Label"
+        type="text"
+        value={label}
+        onChange={changeLabel}
+      />
+      <button className={styles.button} onClick={deleteZone}>
+        <Trash />
+        <span>Delete</span>
+      </button>
     </div>
   )
 }
