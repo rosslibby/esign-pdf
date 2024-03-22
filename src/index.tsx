@@ -3,13 +3,22 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import FirebaseProvider from './firebase/context';
+import DocumentProvider from './document';
+import ZoneProvider from './zone';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <FirebaseProvider>
+      <DocumentProvider>
+        <ZoneProvider>
+          <App />
+        </ZoneProvider>
+      </DocumentProvider>
+    </FirebaseProvider>
   </React.StrictMode>
 );
 

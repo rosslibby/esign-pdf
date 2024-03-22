@@ -1,0 +1,5 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: min-content 2fr;
+  gap: 2rem;
+}
