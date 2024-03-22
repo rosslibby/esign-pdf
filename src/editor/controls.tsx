@@ -18,7 +18,6 @@ export default function Controls() {
   const togglePlaceZone = () => setPlacing(
     (prevState: boolean) => !prevState,
   )
-  console.log(zones)
 
   const handleZoneClick = (selectedZone: Zone) => {
     setZone(selectedZone)

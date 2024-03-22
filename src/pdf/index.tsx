@@ -48,20 +48,6 @@ export const PdfViewer = ({ fileUrl }: {
     let container = containerRef.current || null
     let doc = pdfRef.current || null
     let current = doc?.firstElementChild || null
-    const escapeKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' || (e.key === 'z' && e.metaKey)) {
-        setZones((zones: Zone[]) => zones.filter(
-          (_, i: number) => i < zones.length - 1,
-        ))
-        setPlacing(false)
-        setDrawingZone(false)
-      }
-    }
-    // if (placing && drawingZone) {
-    //   document.addEventListener('keydown', escapeKey)
-    // } else {
-    //   document.removeEventListener('keydown', escapeKey)
-    // }
     const mouseDown = (e: MouseEvent) => {
       const bounds = current?.getBoundingClientRect()
       if (bounds) {
@@ -99,7 +85,6 @@ export const PdfViewer = ({ fileUrl }: {
     }
     function mouseMove(e: MouseEvent) {
       const [startW, startH] = starting
-      const currentZone = zones[zones.length - 1]
       setZones((prevState: Zone[]) =>
         prevState.map((zone: Zone, i: number) =>
           i === zones.length - 1
@@ -164,9 +149,6 @@ export const PdfViewer = ({ fileUrl }: {
         container.removeEventListener('mousemove', mouseMove)
       }
 
-      // if (!drawingZone && !placing && container) {
-      //   document.removeEventListener('keydown', escapeKey)
-      // }
       container = null
       current = null
     }
@@ -191,46 +173,6 @@ export const PdfViewer = ({ fileUrl }: {
     const pdfAsImageSrc = importPDFCanvas.toDataURL()
     setSrc(pdfAsImageSrc)
   }
-
-  // const finalize = () => {
-  //   const canv = document.getElementById('canvas') as HTMLCanvasElement
-  //   const ogcanvas = document.querySelector('#content canvas') as HTMLCanvasElement
-  //   const bounds = ogcanvas?.getBoundingClientRect()
-
-  //   if (bounds) {
-  //     const image = new Image(bounds.width, bounds.height)
-  //     image.src = src
-  //     canv.width = ogcanvas.width
-  //     canv.height = ogcanvas.height
-  //     canv.style.width = bounds.width + 'px'
-  //     canv.style.height = bounds.height + 'px'
-
-  //     const ctx = canv.getContext('2d')
-  //     const multiplier = ogcanvas.width / bounds.width
-
-  //     if (ctx) {
-  //       //draw pdf
-  //       ctx.drawImage(image, 0, 0, ogcanvas.width, ogcanvas.height)
-      
-  //       // draw signature zones
-  //       for (const zone of zones) {
-  //         console.log(zone)
-  //         ctx.fillStyle = '#30ffe98a'
-  //         ctx.strokeStyle = '#45e1ff'
-  //         ctx.fillRect(zone.offsetX * multiplier, zone.offsetY * multiplier, zone.w * multiplier, zone.h * multiplier)
-  //       }
-  //     } else {
-  //       console.warn('No context!')
-  //     }
-  //   }
-
-  //   if (finalizeCount === 1) {
-  //     const finalSrc = canv.toDataURL('image/jpeg', 1.0)
-  //     setFinalSrc(finalSrc)
-  //   }
-
-  //   setFinalizeCount((prev: number) => prev + 1)
-  // }
 
   // if (finalSrc) return (
   //   <MyDocument imgSrc={finalSrc} />
