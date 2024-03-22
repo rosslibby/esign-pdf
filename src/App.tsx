@@ -7,8 +7,8 @@ import DocumentUrl from './url'
 
 function App() {
   return (
-    <div>
-      <DocumentUrl />
+    <div className="App">
+      {/* <DocumentUrl /> */}
       <canvas style={{
         // boxShadow: '2px 4px 18px 1px #3b3b3b29',
         position: 'absolute',

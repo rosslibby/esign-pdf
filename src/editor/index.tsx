@@ -6,7 +6,7 @@ export default function Editor({ children }: {
   children: ReactNode
 }) {
   return (
-    <div className={styles.editor}>
+    <div className={styles.wrapper}>
       {children}
     </div>
   )

@@ -1,5 +1,5 @@
 import { ReactNode, createContext, useState } from 'react'
-import { ZoneCtx } from './types'
+import { Zone, ZoneCtx } from './types'
 
 export const zoneCtx = createContext<ZoneCtx>({
   placing: false,
@@ -11,6 +11,7 @@ export const zoneCtx = createContext<ZoneCtx>({
 export default function ZoneProvider({ children }: {
   children: ReactNode
 }) {
+  const [zone, setZone] = useState<Zone | undefined>()
   const [placing, setPlacing] = useState<boolean>(false)
   const [menu, setMenu] = useState<boolean>(false)
   const [bounds, setBounds] = useState<[number, number]>([0, 0])
@@ -20,10 +21,12 @@ export default function ZoneProvider({ children }: {
       placing,
       menu,
       bounds,
+      zone,
       _: {
         setBounds,
         setMenu,
         setPlacing,
+        setZone,
       },
     }}>
       {children}

@@ -56,6 +56,7 @@ export const PdfViewer = ({ fileUrl }: {
         }
         const newZone: Zone = {
           id: uuid(),
+          active: true,
           documentId: '',
           pageNumber: page,
           encryption: '',
@@ -70,7 +71,13 @@ export const PdfViewer = ({ fileUrl }: {
           offsetX: 0,
           offsetY: 0,
         }
-        setZones((prevState: Zone[]) => [...prevState, newZone])
+        setZones((prevState: Zone[]) => [
+          ...prevState.map((zone: Zone) => ({
+            ...zone,
+            active: false,
+          })),
+          newZone,
+        ])
         setStarting([e.clientX, e.clientY])
         setDrawingZone(true)
       }
@@ -204,9 +211,12 @@ export const PdfViewer = ({ fileUrl }: {
         >
           <Page pageNumber={page} onRenderSuccess={getImg} />
         </Document>
-        {zones.map((zone: Zone, i: number) => (
-          <ZoneBounds {...zone} key={`zone-${i}`} />
-        ))}
+        {zones
+          .filter((zone: Zone) => zone.pageNumber === page)
+          .map((zone: Zone, i: number) => (
+            <ZoneBounds {...zone} key={`zone-${i}`} />
+          ))
+        }
       </div>
     </div>
   )

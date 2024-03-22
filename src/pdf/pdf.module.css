@@ -1,12 +1,13 @@
 .container {
-  width: fit-content;
   position: relative;
+  width: fit-content;
 }
 
 .pdf {
-  border: 6px solid #d9d9d9;
-  border-radius: 1px;
-  /* box-shadow: 0 0 0 16px #d9d9d9; */
+  border: 1px solid #9496ff12;
+  border-radius: 6px;
+  box-shadow: 0 0 13px 0 #d1d4dc4f;
+  overflow: hidden;
 }
 
 .pdfNoSelect {

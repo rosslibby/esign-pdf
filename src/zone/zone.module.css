@@ -1,8 +1,15 @@
 .zone {
-  background-color: #30ffe98a;
-  border: 1px solid #45e1ff;
+  background-color: #aeb7ff24;
+  border: 3px dashed #aeb7ff;
   position: absolute;
   z-index: 2;
+  border-radius: 2px;
+}
+
+.active {
+  backdrop-filter: brightness(1.25);
+  background-color: #2a90ff26;
+  border-color: #4d62ff;
 }
 
 .menu {

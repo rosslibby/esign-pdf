@@ -9,6 +9,7 @@ export enum ZONE_TYPE {
 
 export type Zone = {
   id: string
+  active: boolean
   documentId: string
   pageNumber: number
   encryption: string
