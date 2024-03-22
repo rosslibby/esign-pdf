@@ -3,6 +3,10 @@
   width: fit-content;
 }
 
+.crosshair {
+  cursor: crosshair;
+}
+
 .pdf {
   border: 1px solid #9496ff12;
   border-radius: 6px;
@@ -11,6 +15,7 @@
 }
 
 .pdfNoSelect {
+  cursor: crosshair !important;
   pointer-events: none;
   user-select: none;
 }

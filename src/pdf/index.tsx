@@ -34,7 +34,7 @@ export const PdfViewer = ({ fileUrl }: {
     },
   } = useContext(documentCtx)
   const containerRef = useRef<HTMLDivElement>(null)
-  const { placing } = useContext(zoneCtx)
+  const { placing, _: { setPlacing } } = useContext(zoneCtx)
   const pdfRef = useRef<HTMLDivElement>(null)
   const [finalSrc, setFinalSrc] = useState<string>('')
   const [finalizeCount, setFinalizeCount] = useState<number>(0)
@@ -48,6 +48,20 @@ export const PdfViewer = ({ fileUrl }: {
     let container = containerRef.current || null
     let doc = pdfRef.current || null
     let current = doc?.firstElementChild || null
+    const escapeKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' || (e.key === 'z' && e.metaKey)) {
+        setZones((zones: Zone[]) => zones.filter(
+          (_, i: number) => i < zones.length - 1,
+        ))
+        setPlacing(false)
+        setDrawingZone(false)
+      }
+    }
+    // if (placing && drawingZone) {
+    //   document.addEventListener('keydown', escapeKey)
+    // } else {
+    //   document.removeEventListener('keydown', escapeKey)
+    // }
     const mouseDown = (e: MouseEvent) => {
       const bounds = current?.getBoundingClientRect()
       if (bounds) {
@@ -123,6 +137,7 @@ export const PdfViewer = ({ fileUrl }: {
             }
           }
         ))
+        setPlacing(false)
       }
     }
 
@@ -148,10 +163,14 @@ export const PdfViewer = ({ fileUrl }: {
         container.removeEventListener('mouseup', mouseUp)
         container.removeEventListener('mousemove', mouseMove)
       }
+
+      // if (!drawingZone && !placing && container) {
+      //   document.removeEventListener('keydown', escapeKey)
+      // }
       container = null
       current = null
     }
-  }, [setStarting, starting, setTempZone, tempZone, drawingZone, setDrawingZone, setBounds, pdfRef, placing, setZones])
+  }, [setStarting, starting, setTempZone, tempZone, drawingZone, setDrawingZone, setBounds, setPlacing, setZones, pdfRef, placing, setZones])
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
     setPages(numPages)
@@ -219,7 +238,7 @@ export const PdfViewer = ({ fileUrl }: {
 
   return (
     <div ref={containerRef}>
-      <div ref={pdfRef} className={styles.container} id="content">
+      <div ref={pdfRef} className={`${styles.container} ${placing && styles.crosshair}`} id="content">
         <Document
           file={fileUrl}
           onLoadSuccess={onDocumentLoadSuccess}

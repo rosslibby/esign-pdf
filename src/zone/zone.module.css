@@ -6,6 +6,17 @@
   border-radius: 2px;
 }
 
+.zone:hover {
+  background-color: #4d62ff52;
+  border-color: #4d62fffa;
+  cursor: pointer;
+  outline: 13px solid #4d62ff52;
+}
+
+.zone.drawing:hover {
+  cursor: crosshair;
+}
+
 .active {
   backdrop-filter: brightness(1.25);
   background-color: #2a90ff26;
