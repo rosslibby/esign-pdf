@@ -20,16 +20,21 @@ export const ZoneBounds = (props: Zone) => {
     ))
   }
 
+  const left = (w < 0 ? (x + w) : x) + 'px'
+  const top = (h < 0 ? (y + h) : y) + 'px'
+  const height = Math.abs(h) + 'px'
+  const width = Math.abs(w) + 'px'
+
   return (
     <div
       className={classnames}
       data-index={index}
       onClick={handleClick}
       style={{
-        left: `${x}px`,
-        top: `${y}px`,
-        width: `${w}px`,
-        height: `${h}px`,
+        height,
+        left,
+        top,
+        width,
       }}
     />
   )
